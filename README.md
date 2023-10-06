@@ -6,8 +6,10 @@ You will be asked to do certain tasks answer questions all with the aim of getti
 
 This is my first ever repository. If you have any suggestion or idea about the project please let me know.
 
+## It is far from being done yet, may not even run on your machine. My plan is to regularly update the project while learning android developement.
 
-Functionalities of AIAlarm 1.0.0:
+
+(planned) Functionalities of AIAlarm 1.0.0:
 
 	Working app with no errors, glithces, anomalies
 	Clean interface
