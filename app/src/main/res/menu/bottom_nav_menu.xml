@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/avatars"
+        android:title="Avatars"
+        android:icon="@drawable/android_icon_black" />
+
+    <item android:id="@+id/addAlarm"
+        android:title="Add Alarm"
+        android:icon="@drawable/add_alarm_icon_black" />
+
+    <item android:id="@+id/placeholder"
+        android:title="" />
+
+    <item android:id="@+id/addAlarm2"
+        android:title="Add Alarm"
+        android:icon="@drawable/add_icon_black" />
+
+    <item android:id="@+id/settings"
+        android:title="Settings"
+        android:icon="@drawable/settings_icon_black" />
+</menu>
