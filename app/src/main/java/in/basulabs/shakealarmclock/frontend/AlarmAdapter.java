@@ -26,16 +26,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import in.basulabs.shakealarmclock.R;
 import in.basulabs.shakealarmclock.backend.AlarmData;
-import in.basulabs.shakealarmclock.backend.ConstantsAndStatics;
 
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> {
 
@@ -82,12 +80,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 	}
 
 	//----------------------------------------------------------------------------------------------------
-
+/**
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-
 		public ImageButton alarmOnOffImgBtn, alarmDeleteBtn;
-		public TextView alarmTimeTextView, alarmDateTextView, alarmTypeTextView,
-			alarmMessageTextView;
+		public TextView alarmTimeTextView, alarmDateTextView, alarmTypeTextView, alarmMessageTextView;
 		public CardView alarmCardView;
 
 		public ViewHolder(View view) {
@@ -96,8 +92,22 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 			alarmTimeTextView = view.findViewById(R.id.alarmTimeTextView);
 			alarmDateTextView = view.findViewById(R.id.alarmDateTextView);
 			alarmTypeTextView = view.findViewById(R.id.alarmTypeTextView);
-			alarmMessageTextView = view.findViewById(
-				R.id.recyclerView_alarmMessageTextView);
+			alarmMessageTextView = view.findViewById(R.id.recyclerView_alarmMessageTextView);
+			alarmDeleteBtn = view.findViewById(R.id.alarmDeleteBtn);
+			alarmCardView = view.findViewById(R.id.alarmCardView);
+		}
+	}
+ */
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		public SwitchCompat alarmOnOffSwitch;
+		public ImageButton alarmDeleteBtn;
+		public TextView alarmTimeTextView;
+		public CardView alarmCardView;
+
+		public ViewHolder(View view) {
+			super(view);
+			alarmOnOffSwitch = view.findViewById(R.id.alarmOnOffSwitch);
+			alarmTimeTextView = view.findViewById(R.id.alarm_time);
 			alarmDeleteBtn = view.findViewById(R.id.alarmDeleteBtn);
 			alarmCardView = view.findViewById(R.id.alarmCardView);
 		}
@@ -133,8 +143,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View listItem = LayoutInflater.from(parent.getContext())
-			.inflate(R.layout.recyclerviewrow_alarmslist, parent, false);
+		//View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerviewrow_alarmslist, parent, false);
+		View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.alarm_list_item, parent, false);
 		return new ViewHolder(listItem);
 	}
 
@@ -145,95 +155,43 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 	public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
 		AlarmData alarmData = alarmDataArrayList.get(position);
-
+/*
 		if (alarmData.isActive()) {
 			holder.alarmOnOffImgBtn.setImageResource(R.drawable.ic_alarm_on);
 		} else {
 			holder.alarmOnOffImgBtn.setImageResource(R.drawable.ic_alarm_off);
 		}
+ */
 
 		if (DateFormat.is24HourFormat(context)) {
-			holder.alarmTimeTextView.setText(
-				context.getResources().getString(R.string.time_24hour,
-					alarmData.getAlarmTime().getHour(),
-					alarmData.getAlarmTime().getMinute()));
+			holder.alarmTimeTextView.setText(context.getResources().getString(R.string.time_24hour, alarmData.getAlarmTime().getHour(), alarmData.getAlarmTime().getMinute()));
 		} else {
 			String amPm = alarmData.getAlarmTime().getHour() < 12 ? "AM" : "PM";
 
 			int alarmHour;
 
-			if ((alarmData.getAlarmTime().getHour() > 0) &&
-				(alarmData.getAlarmTime().getHour() <= 12)) {
+			if ((alarmData.getAlarmTime().getHour() > 0) && (alarmData.getAlarmTime().getHour() <= 12)) {
 				alarmHour = alarmData.getAlarmTime().getHour();
-			} else if (alarmData.getAlarmTime().getHour() > 12 &&
-				alarmData.getAlarmTime().getHour() <= 23) {
+			} else if (alarmData.getAlarmTime().getHour() > 12 && alarmData.getAlarmTime().getHour() <= 23) {
 				alarmHour = alarmData.getAlarmTime().getHour() - 12;
 			} else {
 				alarmHour = alarmData.getAlarmTime().getHour() + 12;
 			}
 
-			holder.alarmTimeTextView.setText(
-				context.getResources().getString(R.string.time_12hour, alarmHour,
-					alarmData.getAlarmTime().getMinute(), amPm));
+			holder.alarmTimeTextView.setText(context.getResources().getString(R.string.time_12hour, alarmHour, alarmData.getAlarmTime().getMinute(), amPm));
 		}
 
-		if (!alarmData.isRepeatOn()) {
+		//String alarmMessage = alarmData.getAlarmMessage();
+		//holder.alarmMessageTextView.setText(alarmMessage == null ? "" : alarmMessage);
 
-			String nullMessage
-				= "AlarmAdapter: alarmDateTime was null for a non-repetitive alarm.";
-
-			int day = (Objects.requireNonNull(alarmData.getAlarmDateTime(), nullMessage)
-				.getDayOfWeek()
-				.getValue() + 1) > 7 ? 1 :
-				(alarmData.getAlarmDateTime().getDayOfWeek().getValue() + 1);
-
-			holder.alarmDateTextView.setText(
-				context.getResources().getString(R.string.date,
-					new DateFormatSymbols().getShortWeekdays()[day],
-					alarmData.getAlarmDateTime().getDayOfMonth(),
-					new DateFormatSymbols().getShortMonths()[
-						alarmData.getAlarmDateTime().getMonthValue() - 1]));
-		} else {
-			StringBuilder str = new StringBuilder();
-			for (int i = 0; i < Objects.requireNonNull(alarmData.getRepeatDays(),
-				"AlarmAdapter: repeatDays was null.").size(); i++) {
-				int day = (alarmData.getRepeatDays().get(i) + 1) > 7
-					? 1
-					: (alarmData.getRepeatDays().get(i) + 1);
-				str.append(
-					new DateFormatSymbols().getShortWeekdays()[day]);
-				if (i < alarmData.getRepeatDays().size() - 1) {
-					str.append(" ");
-				}
-			}
-			holder.alarmDateTextView.setText(str.toString());
-		}
-
-		if (alarmData.getAlarmType() == ConstantsAndStatics.ALARM_TYPE_SOUND_ONLY) {
-			holder.alarmTypeTextView.setText(
-				context.getResources().getString(R.string.sound));
-		} else if (alarmData.getAlarmType() ==
-			ConstantsAndStatics.ALARM_TYPE_VIBRATE_ONLY) {
-			holder.alarmTypeTextView.setText(
-				context.getResources().getString(R.string.vibrate));
-		} else {
-			holder.alarmTypeTextView.setText(
-				context.getResources().getString(R.string.sound_and_vibrate));
-		}
-
-		String alarmMessage = alarmData.getAlarmMessage();
-		holder.alarmMessageTextView.setText(alarmMessage == null ? "" : alarmMessage);
-
-		holder.alarmOnOffImgBtn.setOnClickListener(view -> {
+		holder.alarmOnOffSwitch.setOnClickListener(view -> {
 			int newAlarmState;
 			if (!alarmData.isActive()) {
 				newAlarmState = 1;
 			} else {
 				newAlarmState = 0;
 			}
-			listener.onOnOffButtonClick(holder.getLayoutPosition(),
-				alarmData.getAlarmTime().getHour(), alarmData.getAlarmTime().getMinute(),
-				newAlarmState);
+			listener.onOnOffButtonClick(holder.getLayoutPosition(), alarmData.getAlarmTime().getHour(), alarmData.getAlarmTime().getMinute(), newAlarmState);
 		});
 
 		holder.alarmDeleteBtn.setOnClickListener(

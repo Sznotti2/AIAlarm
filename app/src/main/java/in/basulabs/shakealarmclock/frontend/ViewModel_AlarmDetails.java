@@ -42,17 +42,6 @@ public class ViewModel_AlarmDetails extends ViewModel {
 	private MutableLiveData<LocalDateTime> alarmDateTime;
 
 	/**
-	 * The snooze interval in minutes.
-	 */
-	private MutableLiveData<Integer> snoozeIntervalInMins;
-
-	/**
-	 * The snooze frequency, i.e. the number of times the alarm will be snoozed before it
-	 * is cancelled automatically.
-	 */
-	private MutableLiveData<Integer> snoozeFreq;
-
-	/**
 	 * Represents the alarm type. Can have only three values:
 	 * {@link ConstantsAndStatics#ALARM_TYPE_SOUND_ONLY},
 	 * {@link ConstantsAndStatics#ALARM_TYPE_VIBRATE_ONLY} or
@@ -64,11 +53,6 @@ public class ViewModel_AlarmDetails extends ViewModel {
 	 * The alarm volume.
 	 */
 	private MutableLiveData<Integer> alarmVolume;
-
-	/**
-	 * Indicates whether snooze is ON or OFF.
-	 */
-	private MutableLiveData<Boolean> isSnoozeOn;
 
 	/**
 	 * Represents whether repeat is ON or OFF.
@@ -205,66 +189,6 @@ public class ViewModel_AlarmDetails extends ViewModel {
 	//------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Get the snooze interval, i.e. the period after which the alarm should ring again.
-	 * Returns 5 if not set previously.
-	 *
-	 * @return Same as in description.
-	 */
-	public int getSnoozeIntervalInMins() {
-		if (snoozeIntervalInMins == null) {
-			snoozeIntervalInMins = new MutableLiveData<>(5);
-		}
-		return snoozeIntervalInMins.getValue() == null ? 5 :
-			snoozeIntervalInMins.getValue();
-	}
-
-	//------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Set the snooze interval, i.e. the period after which the alarm should ring again.
-	 *
-	 * @param snoozeIntervalInMins The value to be set.
-	 */
-	public void setSnoozeIntervalInMins(int snoozeIntervalInMins) {
-		if (this.snoozeIntervalInMins == null) {
-			this.snoozeIntervalInMins = new MutableLiveData<>();
-		}
-		this.snoozeIntervalInMins.setValue(snoozeIntervalInMins);
-	}
-
-	//------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Get the number of times the alarm will be snoozed. Returns 3 if not set
-	 * previously.
-	 *
-	 * @return Same as in description.
-	 */
-	public int getSnoozeFreq() {
-
-		if (snoozeFreq == null) {
-			snoozeFreq = new MutableLiveData<>(3);
-		}
-		return snoozeFreq.getValue() == null ? 3 : snoozeFreq.getValue();
-	}
-
-	//------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Set the number of times the alarm will be snoozed before being dismissed.
-	 *
-	 * @param snoozeFreq The value to be set.
-	 */
-	public void setSnoozeFreq(int snoozeFreq) {
-		if (this.snoozeFreq == null) {
-			this.snoozeFreq = new MutableLiveData<>();
-		}
-		this.snoozeFreq.setValue(snoozeFreq);
-	}
-
-	//------------------------------------------------------------------------------------------------------
-
-	/**
 	 * Get the alarm type.
 	 *
 	 * @return One of {@link ConstantsAndStatics#ALARM_TYPE_SOUND_ONLY},
@@ -324,37 +248,6 @@ public class ViewModel_AlarmDetails extends ViewModel {
 			this.alarmVolume = new MutableLiveData<>();
 		}
 		this.alarmVolume.setValue(alarmVolume);
-	}
-
-	//------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Get whether snooze is ON or OFF. Default: {@code true}.
-	 *
-	 * @return {@code true} is snooze is ON, otherwise {@code false}. Default:
-	 *    {@code true}.
-	 */
-	@SuppressWarnings("SimplifiableConditionalExpression")
-	public boolean getIsSnoozeOn() {
-		if (isSnoozeOn == null) {
-			isSnoozeOn = new MutableLiveData<>(true);
-		}
-		return isSnoozeOn.getValue() == null ? true : isSnoozeOn.getValue();
-
-	}
-
-	//------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Set whether snooze is ON or OFF.
-	 *
-	 * @param isSnoozeOn The value to be set.
-	 */
-	public void setIsSnoozeOn(boolean isSnoozeOn) {
-		if (this.isSnoozeOn == null) {
-			this.isSnoozeOn = new MutableLiveData<>();
-		}
-		this.isSnoozeOn.setValue(isSnoozeOn);
 	}
 
 	//------------------------------------------------------------------------------------------------------

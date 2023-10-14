@@ -111,18 +111,14 @@ public class Activity_AlarmsList extends AppCompatActivity implements AlarmAdapt
 		// Initialise the view model:
 		viewModel.init(alarmDatabase);
 
-		sharedPref = getSharedPreferences(ConstantsAndStatics.SHARED_PREF_FILE_NAME,
-			MODE_PRIVATE);
+		sharedPref = getSharedPreferences(ConstantsAndStatics.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
 		sharedPrefEditor = sharedPref.edit();
 
 		// Find and set the app theme:
 		int defaultTheme = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ?
 			ConstantsAndStatics.THEME_SYSTEM : ConstantsAndStatics.THEME_AUTO_TIME;
 		if (savedInstanceState == null) {
-			AppCompatDelegate
-				.setDefaultNightMode(ConstantsAndStatics.getTheme(
-					sharedPref.getInt(ConstantsAndStatics.SHARED_PREF_KEY_THEME,
-						defaultTheme)));
+			AppCompatDelegate.setDefaultNightMode(ConstantsAndStatics.getTheme(sharedPref.getInt(ConstantsAndStatics.SHARED_PREF_KEY_THEME, defaultTheme)));
 		}
 
 		//Button addAlarmButton = findViewById(R.id.addAlarmButton);
@@ -154,8 +150,7 @@ public class Activity_AlarmsList extends AppCompatActivity implements AlarmAdapt
 		// If yes, start Activity_AlarmDetails with necessary data.
 		if (getIntent().getAction() != null) {
 
-			if (getIntent().getAction()
-				.equals(ConstantsAndStatics.ACTION_NEW_ALARM_FROM_INTENT)) {
+			if (getIntent().getAction().equals(ConstantsAndStatics.ACTION_NEW_ALARM_FROM_INTENT)) {
 
 				Intent intent = new Intent(this, Activity_AlarmDetails.class);
 				intent.setAction(ConstantsAndStatics.ACTION_NEW_ALARM_FROM_INTENT);
@@ -299,8 +294,7 @@ public class Activity_AlarmsList extends AppCompatActivity implements AlarmAdapt
 			alarmEntity.alarmID = result[0];
 
 			if (viewModel.getAlarmsCount(alarmDatabase) == 1) {
-				alarmAdapter = new AlarmAdapter(viewModel.getAlarmDataArrayList(), this,
-					this);
+				alarmAdapter = new AlarmAdapter(viewModel.getAlarmDataArrayList(), this, this);
 				alarmsRecyclerView.swapAdapter(alarmAdapter, false);
 			} else {
 				alarmAdapter.notifyItemInserted(result[1]);
@@ -350,13 +344,10 @@ public class Activity_AlarmsList extends AppCompatActivity implements AlarmAdapt
 
 		int alarmID = viewModel.getAlarmId(alarmDatabase, hour, mins);
 
-		int flags =
-			android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ?
-				PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE :
-				PendingIntent.FLAG_NO_CREATE;
+		int flags = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ?
+				PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_NO_CREATE;
 
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
-			alarmID, intent, flags);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmID, intent, flags);
 
 		if (pendingIntent != null) {
 			alarmManager.cancel(pendingIntent);

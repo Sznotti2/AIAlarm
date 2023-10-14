@@ -39,17 +39,12 @@ public class ViewModel_RingtonePicker extends ViewModel {
 
 	private final MutableLiveData<CharSequence> title = new MutableLiveData<>();
 
-	private final MutableLiveData<ArrayList<Uri>> toneUriList = new MutableLiveData<>(
-		new ArrayList<>());
-	private final MutableLiveData<ArrayList<String>> toneNameList =
-		new MutableLiveData<>(
-			new ArrayList<>());
-	private final MutableLiveData<ArrayList<Integer>> toneIdList = new MutableLiveData<>(
-		new ArrayList<>());
+	private final MutableLiveData<ArrayList<Uri>> toneUriList = new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<ArrayList<String>> toneNameList = new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<ArrayList<Integer>> toneIdList = new MutableLiveData<>(new ArrayList<>());
 
 	private final MutableLiveData<Boolean> isInitialised = new MutableLiveData<>(false);
-	private final MutableLiveData<Boolean> requestedPermissions
-		= new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> requestedPermissions = new MutableLiveData<>(false);
 
 	public boolean werePermsRequested() {
 		return Boolean.TRUE.equals(requestedPermissions.getValue());

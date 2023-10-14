@@ -52,7 +52,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
@@ -75,7 +74,6 @@ public class Activity_AlarmDetails extends AppCompatActivity implements
 	private static final String BACK_STACK_TAG = "activityAlarmDetails_fragment_stack";
 
 	private static final int FRAGMENT_MAIN = 100;
-	private static final int FRAGMENT_SNOOZE = 103;
 	private static final int FRAGMENT_REPEAT = 110;
 	private static final int FRAGMENT_PICK_DATE = 203;
 	private static final int FRAGMENT_ALARM_MESSAGE = 401;
@@ -279,8 +277,10 @@ public class Activity_AlarmDetails extends AppCompatActivity implements
 					actionBar.setTitle(R.string.actionBarTitle_editAlarm);
 				}
 			}
+			/*
 			case FRAGMENT_SNOOZE ->
 				actionBar.setTitle(R.string.actionBarTitle_snoozeOptions);
+			 */
 			case FRAGMENT_REPEAT ->
 				actionBar.setTitle(R.string.actionBarTitle_repeatOptions);
 			case FRAGMENT_PICK_DATE ->
@@ -318,29 +318,26 @@ public class Activity_AlarmDetails extends AppCompatActivity implements
 
 	//----------------------------------------------------------------------------------------------------
 
-	@Override
+	//@Override
 	public void onSaveButtonClick() {
 
 		Bundle data = new Bundle();
 		data.putInt(BUNDLE_KEY_ALARM_HOUR, viewModel.getAlarmDateTime().getHour());
 		data.putInt(BUNDLE_KEY_ALARM_MINUTE, viewModel.getAlarmDateTime().getMinute());
 		data.putInt(BUNDLE_KEY_ALARM_DAY, viewModel.getAlarmDateTime().getDayOfMonth());
-		data.putInt(BUNDLE_KEY_ALARM_MONTH,
-			viewModel.getAlarmDateTime().getMonthValue());
+		data.putInt(BUNDLE_KEY_ALARM_MONTH, viewModel.getAlarmDateTime().getMonthValue());
 		data.putInt(BUNDLE_KEY_ALARM_YEAR, viewModel.getAlarmDateTime().getYear());
 		data.putInt(BUNDLE_KEY_ALARM_TYPE, viewModel.getAlarmType());
 		data.putBoolean(BUNDLE_KEY_IS_REPEAT_ON, viewModel.getIsRepeatOn());
 		data.putInt(BUNDLE_KEY_ALARM_VOLUME, viewModel.getAlarmVolume());
 		data.putIntegerArrayList(BUNDLE_KEY_REPEAT_DAYS, viewModel.getRepeatDays());
 		data.putParcelable(BUNDLE_KEY_ALARM_TONE_URI, viewModel.getAlarmToneUri());
-		data.putString(ConstantsAndStatics.BUNDLE_KEY_ALARM_MESSAGE,
-			viewModel.getAlarmMessage());
+		data.putString(ConstantsAndStatics.BUNDLE_KEY_ALARM_MESSAGE, viewModel.getAlarmMessage());
 
 		if (viewModel.getIsRepeatOn()) {
 			data.putBoolean(BUNDLE_KEY_HAS_USER_CHOSEN_DATE, false);
 		} else {
-			data.putBoolean(BUNDLE_KEY_HAS_USER_CHOSEN_DATE,
-				viewModel.getHasUserChosenDate());
+			data.putBoolean(BUNDLE_KEY_HAS_USER_CHOSEN_DATE, viewModel.getHasUserChosenDate());
 		}
 
 		if (viewModel.getMode() == MODE_EXISTING_ALARM) {
@@ -353,41 +350,10 @@ public class Activity_AlarmDetails extends AppCompatActivity implements
 		this.finish();
 	}
 
-	//----------------------------------------------------------------------------------------------------
-
-	@Override
-	public void onRequestSnoozeFragCreation() {
-		whichFragment = FRAGMENT_SNOOZE;
-		FragmentTransaction fragmentTransaction =
-			fragmentManager.beginTransaction()
-				.replace(R.id.addAlarmActFragHolder,
-					new Fragment_AlarmDetails_SnoozeOptions())
-				.addToBackStack(BACK_STACK_TAG);
-		fragmentTransaction.commit();
-		fragmentManager.executePendingTransactions();
-		setActionBarTitle();
-	}
-
-	//----------------------------------------------------------------------------------------------------
-
-	@Override
-	public void onRequestDatePickerFragCreation() {
-		fragmentManager.beginTransaction()
-			.replace(R.id.addAlarmActFragHolder, new Fragment_AlarmDetails_DatePicker())
-			.addToBackStack(BACK_STACK_TAG)
-			.commit();
-		fragmentManager.executePendingTransactions();
-		whichFragment = FRAGMENT_PICK_DATE;
-		setActionBarTitle();
-	}
-
-	//----------------------------------------------------------------------------------------------------
-
-	@Override
+	//@Override
 	public void onRequestRepeatFragCreation() {
 		fragmentManager.beginTransaction()
-			.replace(R.id.addAlarmActFragHolder,
-				new Fragment_AlarmDetails_RepeatOptions())
+			.replace(R.id.addAlarmActFragHolder, new Fragment_AlarmDetails_RepeatOptions())
 			.addToBackStack(BACK_STACK_TAG)
 			.commit();
 		fragmentManager.executePendingTransactions();
@@ -395,9 +361,7 @@ public class Activity_AlarmDetails extends AppCompatActivity implements
 		setActionBarTitle();
 	}
 
-	//----------------------------------------------------------------------------------------------------
-
-	@Override
+	//@Override
 	public void onRequestMessageFragCreation() {
 		fragmentManager.beginTransaction()
 			.replace(R.id.addAlarmActFragHolder, new Fragment_AlarmDetails_Message())
@@ -410,13 +374,12 @@ public class Activity_AlarmDetails extends AppCompatActivity implements
 
 	//----------------------------------------------------------------------------------------------------
 
-	@Override
+	//@Override
 	public void onCancelButtonClick() {
 		DialogFragment cancelDialog = new AlertDialog_DiscardChanges();
 		cancelDialog.setCancelable(false);
 		cancelDialog.show(fragmentManager, "");
 	}
-
 	//----------------------------------------------------------------------------------------------------
 
 	@Override
